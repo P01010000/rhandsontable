@@ -148,12 +148,13 @@ genColHeaders <- function(colHeaders, colCount) {
   
   ind_ct = sapply(colHeaders[grepl("V[0-9]+", colHeaders)], FUN = function(x) substring(x, 2));
   ind_ct = ifelse(length(ind_ct)>0, max(ind_ct), 0)
-  #ind_ct = length(which(grepl("V[0-9]{1,}", colHeaders)))
+  ## ind_ct = length(which(grepl("V[0-9]{1,}", colHeaders)))
   # create new column names
   new_cols = paste0("V", ind_ct + (1:(colCount-length(colHeaders)))
   # insert into vector
-  #inds = seq(changes$ind + 1, 1, length.out = changes$ct)
-  c(colHeaders, new_cols)#[order(c(seq_along(colHeaders), inds - 0.5))]
+  ## inds = seq(changes$ind + 1, 1, length.out = changes$ct)
+  c(colHeaders, new_cols)
+                    ##[order(c(seq_along(colHeaders), inds - 0.5))]
 }
 
 genRowHeaders <- function(ct) {
