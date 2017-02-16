@@ -65,11 +65,17 @@ toR = function(data, changes, params, ...) {
     rColClasses = append(rColClasses, rep("character", changes$ct), changes$ind);
     for (i in 1:length(out)) {
       for (j in 1:changes$ct) {
-        out[[i]][[changes$ind+j]]='';
+        if(is.null(out[[i]][[changes$ind+j]]) out[[i]][[changes$ind+j]] <- '';
       }
     }
   }
-
+           
+  if (changes$event == "afterRemoveCol") {
+    rColClasses = as.list(rColClasses);
+    rColClasses[unlist(params$rColHeaders[changes$ind+(1:changes$ct)])] <- NULL;
+    rColClasses = unlist(rColClasses);
+  }
+  
   # convert
   if ("matrix" %in% rClass) {
     nr = length(out)
@@ -77,7 +83,7 @@ toR = function(data, changes, params, ...) {
     # replace NULL with NA
     out = unlist(lapply(out, function(x) if (is.null(x)) NA else x))
     out = matrix(out, nrow = nr, byrow = TRUE)
-    class(out) = params$rColClasses
+    class(out) = rColClasses
   } else if ("data.frame" %in% rClass) {
     nr = length(out)
     out = unlist(out, recursive = FALSE)
