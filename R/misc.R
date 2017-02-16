@@ -112,7 +112,7 @@ toR = function(data, changes, params, ...) {
   # copy/paste may add cols without firing an afterCreateCol event so check
   #   header length;
   if (ncol(out) > length(colHeaders))
-    colHeaders = (colHeaders, ncol(out))
+    colHeaders = genColHeaders(colHeaders, ncol(out))
 
   colnames(out) = colHeaders
   rownames(out) = rowHeaders
