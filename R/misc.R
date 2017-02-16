@@ -147,7 +147,7 @@ genColHeaders <- function(colHeaders, colCount) {
   ## adds colHeaders for each removed column on "afterRemoveCol"-Event. dont call it in that case
   
   ind_ct = sapply(colHeaders[grepl("V[0-9]+", colHeaders)], FUN = function(x) substring(x, 2));
-  ind_ct = ifelse(length(ind_ct)>0, max(ind_ct), 0)
+  ind_ct = ifelse(length(ind_ct)>0, max(as.numeric(ind_ct)), 0)
   ## ind_ct = length(which(grepl("V[0-9]{1,}", colHeaders)))
   # create new column names
   new_cols = paste0("V", ind_ct + (1:(colCount-length(colHeaders))))
