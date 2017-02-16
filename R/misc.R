@@ -74,7 +74,7 @@ toR = function(data, changes, params, ...) {
     rColClasses = as.list(rColClasses);
     rColClasses[unlist(params$rColHeaders[changes$ind+(1:changes$ct)])] <- NULL;
     rColClasses = unlist(rColClasses);
-    colHeaders[changes$ind+(1:changes$ct)] <- NULL;
+    colHeader = colHeaders[-(changes$ind+(1:changes$ct))];
   }
   
   # convert
