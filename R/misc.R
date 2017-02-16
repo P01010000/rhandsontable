@@ -74,6 +74,7 @@ toR = function(data, changes, params, ...) {
     rColClasses = as.list(rColClasses);
     rColClasses[unlist(params$rColHeaders[changes$ind+(1:changes$ct)])] <- NULL;
     rColClasses = unlist(rColClasses);
+    colHeaders[changes$ind+(1:changes$ct)] <- NULL;
   }
   
   # convert
@@ -141,6 +142,8 @@ colClasses <- function(d, colClasses, cols, date_fmt = "%m/%d/%Y", ...) {
 }
 
 genColHeaders <- function(changes, colHeaders) {
+  ## adds colHeaders for each removed column on "afterRemoveCol"-Event. dont call it in that case
+  
   ind_ct = length(which(grepl("V[0-9]{1,}", colHeaders)))
   # create new column names
   new_cols = paste0("V", changes$ct + ind_ct)
