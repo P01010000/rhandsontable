@@ -61,7 +61,7 @@ toR = function(data, changes, params, ...) {
   }
   
   if (changes$event == "afterCreateCol") {
-    colHeaders = append(colHeaders, paste0("C", changes$ind + (1:changes$ct)), changes$ind);
+    #colHeaders = append(colHeaders, paste0("C", changes$ind + (1:changes$ct)), changes$ind);
     rColClasses = append(rColClasses, rep("character", changes$ct), changes$ind);
     for (i in 1:length(out)) {
       for (j in 1:changes$ct) {
@@ -112,7 +112,7 @@ toR = function(data, changes, params, ...) {
   # copy/paste may add cols without firing an afterCreateCol event so check
   #   header length;
   if (ncol(out) > length(colHeaders))
-    colHeaders = genColHeaders(changes, colHeaders)
+    colHeaders = (colHeaders, ncol(out))
 
   colnames(out) = colHeaders
   rownames(out) = rowHeaders
@@ -143,15 +143,17 @@ colClasses <- function(d, colClasses, cols, date_fmt = "%m/%d/%Y", ...) {
   d
 }
 
-genColHeaders <- function(changes, colHeaders) {
+genColHeaders <- function(colHeaders, colCount) {
   ## adds colHeaders for each removed column on "afterRemoveCol"-Event. dont call it in that case
   
-  ind_ct = length(which(grepl("V[0-9]{1,}", colHeaders)))
+  ind_ct = sapply(colHeaders[grepl("V[0-9]+", colHeaders)], FUN = function(x) substring(x, 2));
+  ind_ct = ifelse(length(ind_ct)>0, max(ind_ct), 0)
+  #ind_ct = length(which(grepl("V[0-9]{1,}", colHeaders)))
   # create new column names
-  new_cols = paste0("V", changes$ct + ind_ct)
+  new_cols = paste0("V", ind_ct + (1:(colCount-length(colHeaders)))
   # insert into vector
-  inds = seq(changes$ind + 1, 1, length.out = changes$ct)
-  c(colHeaders, new_cols)[order(c(seq_along(colHeaders), inds - 0.5))]
+  #inds = seq(changes$ind + 1, 1, length.out = changes$ct)
+  c(colHeaders, new_cols)#[order(c(seq_along(colHeaders), inds - 0.5))]
 }
 
 genRowHeaders <- function(ct) {
