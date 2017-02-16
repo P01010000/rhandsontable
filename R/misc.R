@@ -65,7 +65,7 @@ toR = function(data, changes, params, ...) {
     rColClasses = append(rColClasses, rep("character", changes$ct), changes$ind);
     for (i in 1:length(out)) {
       for (j in 1:changes$ct) {
-        if(is.null(out[[i]][[changes$ind+j]]) out[[i]][[changes$ind+j]] <- '';
+        if(is.null(out[[i]][[changes$ind+j]])) out[[i]][[changes$ind+j]] <- '';
       }
     }
   }
