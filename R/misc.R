@@ -59,6 +59,16 @@ toR = function(data, changes, params, ...) {
       rColClasses = rColClasses[-inds]
     }
   }
+  
+  if (changes$event == "afterCreateCol") {
+    colHeaders = append(colHeaders, paste0("C", changes$ind + (1:changes$ct)), changes$ind);
+    rColClasses = append(rColClasses, rep("character", changes$ct), changes$ind);
+    for (i in 1:length(out)) {
+      for (j in 1:changes$ct) {
+        out[[i]][[changes$ind+j]]='';
+      }
+    }
+  }
 
   # convert
   if ("matrix" %in% rClass) {
