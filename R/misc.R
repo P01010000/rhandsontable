@@ -61,7 +61,11 @@ toR = function(data, changes, params, ...) {
   }
   
   if (changes$event == "afterCreateCol") {
-    #colHeaders = append(colHeaders, paste0("C", changes$ind + (1:changes$ct)), changes$ind);
+    ind_ct = sapply(colHeaders[grepl("V[0-9]+", colHeaders)], FUN = function(x) substring(x, 2));
+    ind_ct = ifelse(length(ind_ct)>0, max(as.numeric(ind_ct)), 0)
+    new_cols = paste0("V", ind_ct + 1:changes$ct)
+    colHeaders = append(colHeaders, new_cols, changes$ind);
+    
     rColClasses = append(rColClasses, rep("character", changes$ct), changes$ind);
     for (i in 1:length(out)) {
       for (j in 1:changes$ct) {
