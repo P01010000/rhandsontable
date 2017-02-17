@@ -46,6 +46,8 @@ toR = function(data, changes, params, ...) {
   # }
   
   # pre-conversion updates; afterCreateCol moved to end of function
+  # when adding rows in untyped mode the afterCreateRow-Event does not work after
+  # dragging or using the context menu
   if (changes$event == "afterCreateRow" | length(out)>length(rowHeaders)) {
     # rename to numeric index
     rowHeaders = genRowHeaders(length(out))
@@ -59,11 +61,6 @@ toR = function(data, changes, params, ...) {
       rColClasses = rColClasses[-inds]
     }
   }
-  
-  # when adding rows in untyped mode the afterCreateRow-Event does not work after
-  # dragging or using the context menu
-  if (length(out) > length(rowHeaders))
-    rowHeaders = append(rowHeaders, (length(rowHeaders)+1):length(out))
   
   if (changes$event == "afterCreateCol") {
     ind_ct = sapply(colHeaders[grepl("V[0-9]+", colHeaders)], FUN = function(x) substring(x, 2));
@@ -124,9 +121,6 @@ toR = function(data, changes, params, ...) {
     colHeaders = genColHeaders(colHeaders, ncol(out))
 
   colnames(out) = colHeaders
-    
-  if (nrow(out) > length(rowHeaders))
-    rowHeaders
   rownames(out) = rowHeaders
 
   if ("data.table" %in% rClass)
