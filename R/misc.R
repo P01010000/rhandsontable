@@ -46,9 +46,7 @@ toR = function(data, changes, params, ...) {
   # }
   
   # pre-conversion updates; afterCreateCol moved to end of function
-  # when adding rows in untyped mode the afterCreateRow-Event does not work after
-  # dragging or using the context menu
-  if (changes$event == "afterCreateRow" | length(out)>length(rowHeaders)) {
+  if (changes$event == "afterCreateRow") {
     # rename to numeric index
     rowHeaders = genRowHeaders(length(out))
   } else if (changes$event == "afterRemoveRow") {
@@ -61,6 +59,12 @@ toR = function(data, changes, params, ...) {
       rColClasses = rColClasses[-inds]
     }
   }
+  
+  # when adding rows in untyped mode the afterCreateRow-Event does not work after
+  # dragging or using the context menu
+  # problem also occured when adding a new row and deleting another before editing the new row
+  if (length(out) > length(rowHeaders))
+    rowHeaders = genRowHeaders(length(out))
   
   if (changes$event == "afterCreateCol") {
     ind_ct = sapply(colHeaders[grepl("V[0-9]+", colHeaders)], FUN = function(x) substring(x, 2));
